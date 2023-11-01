@@ -1,0 +1,66 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elecciones 2023 - TV</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    
+    <header>
+        <nav>            
+            <ul class="nav__ul">
+                <br><br><br><br>
+
+                <li class="nav__li"><a href="{{TN}}">TN</a></li>
+                <li class="nav__li"><a href="{{C5N}}">C5N</a></li>
+                <li class="nav__li"><a href="{{Cronica}}">CTV</a></li>
+                <li class="nav__li"><a href="{{TVP}}">TVP</a></li>
+                <li class="nav__li"><a href="{{LN}}">LN</a></li>
+                <li class="nav__li"><a href="{{Canal26}}" style="font-size: 18px; margin-top:6px;">26</a></li>
+                <li class="nav__li"><a href="{{Telefe}}">TLF</a></li>
+                <li class="nav__li"><a href="{{DTV}}">DTV</a></li>
+                <li class="nav__li"><a href="{{Canal10}}" _target="_self" style="font-size: 18px; margin-top:6px;">10</a></li>
+                
+            </ul>
+        </nav>
+    </header>    
+        
+
+
+  <div class="video-container">
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{TN}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{C5N}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{Cronica}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{TVP}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{LN}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{Canal26}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{Telefe}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{DTV}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="video-item">
+        <iframe width="560" height="315" src="{{Canal10}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

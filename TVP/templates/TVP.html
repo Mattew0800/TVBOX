@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elecciones 2023 - TV PÚBLICA</title>
+</head>
+<body>
+
+    <header>
+        <nav>            
+            <ul class="nav__ul">
+                <br><br><br><br><br><br><br><br><br><br><br><br>
+                <li class="nav__li"><a href="{% url 'Inicio' %}">X</a></li>
+
+            </ul>
+        </nav>
+    </header>    
+
+    <iframe width="560" height="315" src="{{URLTVP}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    
+    <style>
+        *{
+            overflow: hidden;
+        }
+
+        iframe{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+                
+        .nav__ul{
+        
+        position: relative;
+        left: 96.3%;
+        list-style: none;
+        position: absolute;
+        z-index: 100;
+        
+        
+        
+        
+        }
+
+
+        .nav__li{    
+        
+        margin-bottom: 15px;
+        background-color: red;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        margin-left: -2%;
+        text-align: center;
+        padding: 3px;
+        
+        
+        
+        }
+
+        .nav__li:hover{  
+        background-color: green;
+        margin-left: -40%;
+        transition: all .2s;
+        }
+
+        .nav__li a{
+        text-decoration: none;
+        color: black;
+        font-size: 20px;
+        margin-right: 3px;
+        margin-top: -10px;
+        
+
+        
+        
+        
+        }
+    </style>
+
+
+</body>
+</html>
