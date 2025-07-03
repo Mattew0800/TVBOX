@@ -1,0 +1,5 @@
+fastapi
+uvicorn[standard]
+sqlmodel
+fastapi-crudrouter
+pymysql
