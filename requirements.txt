@@ -3,3 +3,5 @@ uvicorn[standard]
 sqlmodel
 fastapi-crudrouter
 pymysql
+jinja2
+python-multipart

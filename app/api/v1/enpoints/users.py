@@ -1,14 +1,37 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request, Form
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserDelete, UserRead, UserUpdate
 from app.crud.user import create_user, delete_user, get_user_by_id, get_users, update_user
 from app.db.session import get_db
+from fastapi.responses import HTMLResponse
+from app.core.templates import templates  
+
+
+
 
 router = APIRouter(prefix="/users", tags=["users"])
 
 @router.post("/create", response_model=UserRead)
-def create_user_endpoint(user: UserCreate, db: Session = Depends(get_db)):
-    return create_user(db, user)
+def create_user_form(
+    request: Request,
+    email: str = Form(...),
+    first_name: str = Form(...),
+    last_name: str = Form(...),
+    password: str = Form(...),
+    db: Session = Depends(get_db)
+):
+ # Aquí puedes crear el usuario como antes
+    user_data = UserCreate(
+        email=email,
+        first_name=first_name,
+        last_name=last_name,
+        password=password
+    )
+    user = create_user(db, user_data)
+    # Puedes renderizar una plantilla de éxito o redirigir
+    return templates.TemplateResponse("success.html", {"request": request, "user": user})
+
+    
 
 @router.get("/list", response_model=list[UserRead])
 def list_users_endpoint(db: Session = Depends(get_db)):
