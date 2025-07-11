@@ -1,22 +1,324 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>TVBOX - Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 100vh;
+            background: #111;
+        }
+        .grid-option {
+            width: 100%;
+            aspect-ratio: 4/3;
+            background: #444;
+            border: 2px solid #fff;
+            border-radius: 8px;
+            margin: 0 auto;
+            display: grid;
+            gap: 3px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .grid-option:hover {
+            border-color: #0d6efd;
+        }
+        .grid-1 {
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+        }
+        .grid-1 .cell-1 {
+            background: none;
+            border: 2px solid #fff;
+            border-radius: 4px;
+        }
+        .grid-9 {
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+        }
+        .grid-4 {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+        }
+        /* Grilla de 6 videos personalizada */
+        .grid-6 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 3px;
+            width: 100%;
+            aspect-ratio: 4/3;
+        }
+        .grid-6 .cell-1 {
+            grid-column: 1 / 3;
+            grid-row: 1 / 3;
+        }
+        .grid-6 .cell-2 {
+            grid-column: 3 / 4;
+            grid-row: 1 / 2;
+        }
+        .grid-6 .cell-3 {
+            grid-column: 3 / 4;
+            grid-row: 2 / 3;
+        }
+        .grid-6 .cell-4 {
+            grid-column: 1 / 2;
+            grid-row: 3 / 4;
+        }
+        .grid-6 .cell-5 {
+            grid-column: 2 / 3;
+            grid-row: 3 / 4;
+        }
+        .grid-6 .cell-6 {
+            grid-column: 3 / 4;
+            grid-row: 3 / 4;
+        }
+        .grid-6 .cell {
+            background: none;
+            border: 2px solid #fff;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #fff;
+        }
+        .grid-option .cell {
+            background: none;
+            border: 2px solid #fff;
+            border-radius: 2px;
+        }
+        /* Grilla de 9 videos real */
+        .video-grid-9 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 8px;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+        .video-grid-9 iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #222;
+        }
+        .video-grid-1 {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+        .video-grid-1 iframe {
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            background: #222;
+        }
+        .video-grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 8px;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+        .video-grid-4 iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #222;
+        }
+        .video-grid-6 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 8px;
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 1;
+        }
+        .video-grid-6 iframe:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+        .video-grid-6 iframe:nth-child(2) { grid-column: 3 / 4; grid-row: 1 / 2; }
+        .video-grid-6 iframe:nth-child(3) { grid-column: 3 / 4; grid-row: 2 / 3; }
+        .video-grid-6 iframe:nth-child(4) { grid-column: 1 / 2; grid-row: 3 / 4; }
+        .video-grid-6 iframe:nth-child(5) { grid-column: 2 / 3; grid-row: 3 / 4; }
+        .video-grid-6 iframe:nth-child(6) { grid-column: 3 / 4; grid-row: 3 / 4; }
+        .video-grid-6 iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #222;
+        }
+        .blurred {
+            filter: blur(6px) brightness(0.7);
+            transition: filter 0.3s;
+        }
+    </style>
 </head>
 <body>
-    <div class="main">
-        <section class="signup">
-            <div class="container">
-                <div class="signup-content">
-                    <h2 class="form-title">¡Has iniciado sesión correctamente!</h2>
-                    <p>Bienvenido a la plataforma.</p>
-                    <a href="/" class="form-submit">Volver al inicio</a>
-                </div>
-            </div>
-        </section>
+    <div id="video-grid-container">
+      <div class="video-grid-9">
+        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen></iframe>
+        <iframe src="https://www.youtube.com/embed/60ItHLz5WEA" allowfullscreen></iframe>
+      </div>
     </div>
+    <!-- Modal de selección de grilla -->
+    <div class="modal fade" id="gridModal" tabindex="-1" aria-labelledby="gridModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content bg-dark text-white">
+          <div class="modal-header border-0">
+            <h5 class="modal-title" id="gridModalLabel">Elegí tu grilla</h5>
+          </div>
+          <div class="modal-body">
+            <div class="row g-4">
+              <!-- Opción 1: 1 video grande -->
+              <div class="col-6 col-md-3">
+                <div class="grid-option grid-1" data-grid="1">
+                  <div class="cell cell-1"></div>
+                </div>
+                <div class="text-center mt-2">1 video</div>
+              </div>
+              <!-- Opción 4: 4 videos iguales -->
+              <div class="col-6 col-md-3">
+                <div class="grid-option grid-4" data-grid="4">
+                  <div class="cell"></div><div class="cell"></div>
+                  <div class="cell"></div><div class="cell"></div>
+                </div>
+                <div class="text-center mt-2">4 videos</div>
+              </div>
+              <!-- Opción 3: 6 videos (uno grande, tres abajo) -->
+              <div class="col-6 col-md-3">
+                <div class="grid-option grid-6" data-grid="6">
+                  <div class="cell cell-1"></div>
+                  <div class="cell cell-2"></div>
+                  <div class="cell cell-3"></div>
+                  <div class="cell cell-4"></div>
+                  <div class="cell cell-5"></div>
+                  <div class="cell cell-6"></div>
+                </div>
+                <div class="text-center mt-2">6 videos</div>
+              </div>
+              <!-- Opción 2: 9 videos -->
+              <div class="col-6 col-md-3">
+                <div class="grid-option grid-9" data-grid="9">
+                  <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                  <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                  <div class="cell"></div><div class="cell"></div><div class="cell"></div>
+                </div>
+                <div class="text-center mt-2">9 videos</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var myModal = new bootstrap.Modal(document.getElementById('gridModal'));
+        myModal.show();
+
+        // Aplica blur al fondo cuando el modal está abierto
+        var gridContainer = document.getElementById('video-grid-container');
+        var modalEl = document.getElementById('gridModal');
+        modalEl.addEventListener('show.bs.modal', function () {
+          gridContainer.classList.add('blurred');
+        });
+        modalEl.addEventListener('hidden.bs.modal', function () {
+          gridContainer.classList.remove('blurred');
+        });
+        // Si el modal ya está abierto al cargar, aplica el blur
+        gridContainer.classList.add('blurred');
+
+        // Grillas HTML para cada opción
+        const grids = {
+          1: `
+            <div class="video-grid-1">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+            </div>
+          `,
+          4: `
+            <div class="video-grid-4">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+            </div>
+          `,
+          6: `
+            <div class="video-grid-6">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
+            </div>
+          `,
+          9: `
+            <div class="video-grid-9">
+              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen></iframe>
+              <iframe src="https://www.youtube.com/embed/60ItHLz5WEA" allowfullscreen></iframe>
+            </div>
+          `
+        };
+
+        // Cambia la grilla al hacer clic en una opción
+        document.querySelectorAll('.grid-option').forEach(function(option) {
+          option.addEventListener('click', function() {
+            var gridType = this.getAttribute('data-grid');
+            gridContainer.innerHTML = grids[gridType];
+            var modal = bootstrap.Modal.getInstance(document.getElementById('gridModal'));
+            modal.hide();
+          });
+        });
+
+        // Abrir/cerrar el modal con la tecla M
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'm' || e.key === 'M') {
+            var modalEl = document.getElementById('gridModal');
+            var modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            if (modalEl.classList.contains('show')) {
+              modal.hide();
+            } else {
+              modal.show();
+            }
+          }
+        });
+      });
+    </script>
 </body>
-</html> 
+</html>

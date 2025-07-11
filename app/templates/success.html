@@ -15,11 +15,10 @@
                         <h3 class="text-center mb-0">¡Usuario Creado Exitosamente!</h3>
                     </div>
                     <div class="card-body">
-                        <p><strong>ID:</strong> {{ user.id }}</p>
                         <p><strong>Email:</strong> {{ user.email }}</p>
                         <p><strong>Nombre:</strong> {{ user.first_name }}</p>
-                        <p><strong>Apellido:</strong> {{ user.last_name }}</p>
-                        <a href="/" class="btn btn-primary">Crear Otro Usuario</a>
+                        <p><strong>Apellido:</strong> {{ user.last_name }}</p>                        
+                        <a href="/users/login" class="btn btn-primary">Sign In</a>
                     </div>
                 </div>
             </div>

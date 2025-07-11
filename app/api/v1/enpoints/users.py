@@ -22,15 +22,28 @@ def create_user_form(
     password: str = Form(...),
     db: Session = Depends(get_db)
 ):
-    user_data = UserCreate(
-        email=email,
-        first_name=first_name,
-        last_name=last_name,
-        password=password
-    )
-    user = create_user(db, user_data)
- 
-    return templates.TemplateResponse("success.html", {"request": request, "user": user})
+    try:
+        user_data = UserCreate(
+            email=email,
+            first_name=first_name,
+            last_name=last_name,
+            password=password
+        )
+        user = create_user(db, user_data)
+    
+        return templates.TemplateResponse("success.html", {"request": request, "user": user})
+    except ValueError as e:
+                return templates.TemplateResponse(
+            "create_user.html",
+            {
+                "request": request,
+                "error": str(e),
+                "email": email,
+                "first_name": first_name,
+                "last_name": last_name
+            }
+        )
+
 
 
 @router.get("/list", response_model=list[UserRead])
@@ -41,9 +54,6 @@ def list_users_endpoint(db: Session = Depends(get_db)):
 def login_form(request: Request):
     return templates.TemplateResponse("sign_in.html", {"request": request})
 
-@router.get("/{user_id}", response_model=UserRead)
-def get_user_endpoint(user_id: int, db: Session = Depends(get_db)):
-    return get_user_by_id(db, user_id)
 
 @router.put("/update",response_model=UserRead)
 def update_user_endpoint(user: UserUpdate, db: Session = Depends(get_db)):
@@ -62,10 +72,26 @@ def login_endpoint(
 ):
     usuario = user_repository.login(db, email, password)
     if usuario:
-        return RedirectResponse(url="/users/logueado", status_code=303)
+        response = RedirectResponse(url="/users/logueado", status_code=303)
+        response.set_cookie(key="logged_in", value="true")
+        return response
     else:
         return templates.TemplateResponse("sign_in.html", {"request": request, "error": "Credenciales incorrectas"})
 
+
 @router.get("/logueado", response_class=HTMLResponse)
-def logueado(request: Request):
+def logueado(request: Request, login_check=Depends(user_repository.require_login)):
+    # Si la dependencia retorna una respuesta, FastAPI la usa directamente
+    if isinstance(login_check, RedirectResponse):
+        return login_check
     return templates.TemplateResponse("logueado.html", {"request": request})
+
+
+@router.get("/tvbox_4", response_class=HTMLResponse)
+def tvbox_4(request: Request):
+    return templates.TemplateResponse("tvbox_4.html", {"request": request})
+
+@router.get("/{user_id}", response_model=UserRead)
+def get_user_endpoint(user_id: int, db: Session = Depends(get_db)):
+    return get_user_by_id(db, user_id)
+
