@@ -1,3 +1,4 @@
+from pydantic import EmailStr
 from sqlmodel import SQLModel
 from typing import Optional
 
@@ -23,5 +24,10 @@ class UserUpdate(SQLModel):
 
 class UserDelete(SQLModel):
     id:int
+
+
+class UserLogin(SQLModel):
+    email: str
+    password: str
 
 

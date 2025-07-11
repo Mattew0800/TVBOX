@@ -5,3 +5,5 @@ fastapi-crudrouter
 pymysql
 jinja2
 python-multipart
+passlib[bcrypt]
+cryptography

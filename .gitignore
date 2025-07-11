@@ -26,6 +26,20 @@ wheels/
 .installed.cfg
 *.egg
 
+static/fonts/
+static/vendor/
+static/bootstrap/
+static/**/*.map
+static/**/*.min.*
+static/**/*.ttf
+static/**/*.woff
+static/**/*.woff2
+static/**/*.eot
+static/**/*.otf
+
+!static/css/style.css
+
+
 # IDEs
 .vscode/
 .idea/

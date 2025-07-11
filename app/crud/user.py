@@ -1,9 +1,23 @@
 from sqlalchemy.orm import Session
 from app.db.models.user import User
 from app.schemas.user import UserCreate, UserUpdate
+from app.utils.password import hash_password
 
 def create_user(db: Session, user: UserCreate) -> User:
-    db_user = User(**user.dict())
+
+
+    existing_user = db.query(User).filter(User.email == user.email).first() #type: ignore
+    if existing_user:
+        raise ValueError("El correo ya esta registrado.")
+
+    hashed_password = hash_password(user.password)
+
+    db_user = User(
+        email=user.email,
+        first_name=user.first_name,
+        last_name=user.last_name,
+        password=hashed_password
+    )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
