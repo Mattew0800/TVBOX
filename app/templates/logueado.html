@@ -156,12 +156,12 @@
             top: 0; left: 0;
             z-index: 1;
         }
-        .video-grid-6 iframe:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
-        .video-grid-6 iframe:nth-child(2) { grid-column: 3 / 4; grid-row: 1 / 2; }
-        .video-grid-6 iframe:nth-child(3) { grid-column: 3 / 4; grid-row: 2 / 3; }
-        .video-grid-6 iframe:nth-child(4) { grid-column: 1 / 2; grid-row: 3 / 4; }
-        .video-grid-6 iframe:nth-child(5) { grid-column: 2 / 3; grid-row: 3 / 4; }
-        .video-grid-6 iframe:nth-child(6) { grid-column: 3 / 4; grid-row: 3 / 4; }
+        .video-grid-6 .video-edit-container:nth-child(1) { grid-column: 1 / 3; grid-row: 1 / 3; }
+        .video-grid-6 .video-edit-container:nth-child(2) { grid-column: 3 / 4; grid-row: 1 / 2; }
+        .video-grid-6 .video-edit-container:nth-child(3) { grid-column: 3 / 4; grid-row: 2 / 3; }
+        .video-grid-6 .video-edit-container:nth-child(4) { grid-column: 1 / 2; grid-row: 3 / 4; }
+        .video-grid-6 .video-edit-container:nth-child(5) { grid-column: 2 / 3; grid-row: 3 / 4; }
+        .video-grid-6 .video-edit-container:nth-child(6) { grid-column: 3 / 4; grid-row: 3 / 4; }
         .video-grid-6 iframe {
             width: 100%;
             height: 100%;
@@ -172,20 +172,141 @@
             filter: blur(6px) brightness(0.7);
             transition: filter 0.3s;
         }
+        .video-edit-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            /* min-height: 100px; */
+            /* min-width: 100px; */
+            /* border: 2px dashed #f00; */ /* DEPURACIÓN: quitar borde */
+        }
+        .video-edit-container .edit-icon {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.85);
+            border-radius: 50%;
+            padding: 2px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s, box-shadow 0.2s;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .video-edit-container:hover .edit-icon {
+            opacity: 1;
+        }
+        .video-edit-container .edit-icon svg {
+            width: 14px;
+            height: 14px;
+            display: block;
+            fill: #222;
+            opacity: 0.7;
+        }
+        .video-edit-container .edit-url-input {
+            position: absolute;
+            bottom: 48px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            width: 260px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+            display: block;
+            background: #fff;
+            color: #222;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+        }
+        .video-edit-container .edit-url-input[style*="display:none"] {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
     <div id="video-grid-container">
       <div class="video-grid-9">
-        <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen></iframe>
-        <iframe src="https://www.youtube.com/embed/60ItHLz5WEA" allowfullscreen></iframe>
+        <!-- INICIO: Bloque de video editable -->
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <div class="video-edit-container">
+          <iframe src="https://www.youtube.com/embed/60ItHLz5WEA" allowfullscreen></iframe>
+          <div class="edit-icon" title="Cambiar video">
+            <!-- Ícono de lápiz minimalista estilo YouTube -->
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+          </div>
+          <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+        </div>
+        <!-- FIN: Bloque de video editable -->
       </div>
     </div>
     <!-- Modal de selección de grilla -->
@@ -256,46 +377,100 @@
         // Si el modal ya está abierto al cargar, aplica el blur
         gridContainer.classList.add('blurred');
 
-        // Grillas HTML para cada opción
+        // Plantilla de video editable
+        function getEditableVideoHTML(src) {
+          return `
+            <div class="video-edit-container">
+              <iframe src="${src}" allowfullscreen></iframe>
+              <div class="edit-icon" title="Cambiar video">
+                <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75l11.06-11.06-2.83-2.83L3 17.25z"/><path d="M20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.13 1.13 3.75 3.75 1.13-1.13z"/></svg>
+              </div>
+              <input type="text" class="edit-url-input" placeholder="Pega la URL de YouTube y presiona Enter" style="display:none;" />
+            </div>
+          `;
+        }
+        // Grillas HTML para cada opción usando la plantilla editable
         const grids = {
           1: `
             <div class="video-grid-1">
-              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
+              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
             </div>
           `,
           4: `
             <div class="video-grid-4">
-              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
+              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
             </div>
           `,
           6: `
             <div class="video-grid-6">
-              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
+              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
             </div>
           `,
           9: `
             <div class="video-grid-9">
-              <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/3JZ_D3ELwOQ" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/l482T0yNkeo" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/tgbNymZ7vqY" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/ysz5S6PUM-U" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/2Vv-BfVoq4g" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/9bZkp7q19f0" allowfullscreen></iframe>
-              <iframe src="https://www.youtube.com/embed/60ItHLz5WEA" allowfullscreen></iframe>
+              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/2Vv-BfVoq4g')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/9bZkp7q19f0')}
+              ${getEditableVideoHTML('https://www.youtube.com/embed/60ItHLz5WEA')}
             </div>
           `
         };
-
+        // Función para inicializar la lógica de edición en los videos
+        function initEditableVideos() {
+          // Asegurar autoplay y mute en todos los iframes
+          document.querySelectorAll('.video-edit-container iframe').forEach(function(iframe) {
+            let src = iframe.getAttribute('src');
+            const id = getYouTubeId(src);
+            if (id) {
+              iframe.setAttribute('src', buildYouTubeSrc(id));
+            }
+          });
+          // Lógica de edición
+          document.querySelectorAll('.video-edit-container').forEach(function(container) {
+            const editIcon = container.querySelector('.edit-icon');
+            const input = container.querySelector('.edit-url-input');
+            const iframe = container.querySelector('iframe');
+            // Mostrar input al clickear el icono
+            editIcon.addEventListener('click', function(e) {
+              e.stopPropagation();
+              input.style.display = 'block';
+              input.focus();
+            });
+            // Ocultar input al hacer click fuera
+            document.addEventListener('click', function(e) {
+              if (!container.contains(e.target)) {
+                input.style.display = 'none';
+              }
+            });
+            // Al presionar Enter, actualizar el iframe
+            input.addEventListener('keydown', function(e) {
+              if (e.key === 'Enter') {
+                const id = getYouTubeId(input.value);
+                if (id) {
+                  iframe.setAttribute('src', buildYouTubeSrc(id));
+                  input.style.display = 'none';
+                  input.value = '';
+                } else {
+                  input.value = '';
+                  input.placeholder = 'URL inválida, intenta de nuevo';
+                }
+              }
+            });
+          });
+        }
         // Cambia la grilla al hacer clic en una opción
         document.querySelectorAll('.grid-option').forEach(function(option) {
           option.addEventListener('click', function() {
@@ -303,8 +478,12 @@
             gridContainer.innerHTML = grids[gridType];
             var modal = bootstrap.Modal.getInstance(document.getElementById('gridModal'));
             modal.hide();
+            // Inicializar lógica de edición en los nuevos videos
+            setTimeout(initEditableVideos, 100);
           });
         });
+        // Inicializar en la carga inicial
+        initEditableVideos();
 
         // Abrir/cerrar el modal con la tecla M
         document.addEventListener('keydown', function(e) {
@@ -318,6 +497,17 @@
             }
           }
         });
+
+        // Función para extraer el ID de un video de YouTube desde una URL
+        function getYouTubeId(url) {
+          const regExp = /^.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#&?]*).*/;
+          const match = url.match(regExp);
+          return (match && match[1].length === 11) ? match[1] : null;
+        }
+        // Función para armar el src con autoplay y mute
+        function buildYouTubeSrc(id) {
+          return `https://www.youtube.com/embed/${id}?autoplay=1&mute=1`;
+        }
       });
     </script>
 </body>
