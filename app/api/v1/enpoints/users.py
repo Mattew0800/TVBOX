@@ -96,7 +96,16 @@ def logueado(request: Request, login_check=Depends(user_repository.require_login
         user = db.query(User).filter(User.email == str(user_email)).first() #type: ignore
         if user:
             user_id = user.id
-    return templates.TemplateResponse("logueado.html", {"request": request, "user_id": user_id})
+    config = db.query(UserGridConfig).filter(UserGridConfig.user_id == user_id).first()
+    config_json = config.config_json if config else None
+    return templates.TemplateResponse(
+        "logueado.html",
+        {
+            "request": request,
+            "user_id": user_id,
+            "grid_config": config_json
+        }
+    )
 
 
 @router.get("/tvbox_4", response_class=HTMLResponse)

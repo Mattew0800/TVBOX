@@ -378,6 +378,11 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+      // Exponer variables globales desde el backend
+      window.USER_ID = {{ user_id | tojson }};
+      window.GRID_CONFIG = {{ grid_config | tojson }};
+    </script>
+    <script>
       document.addEventListener('DOMContentLoaded', function() {
         var myModal = new bootstrap.Modal(document.getElementById('gridModal'));
         myModal.show();
@@ -406,45 +411,118 @@
             </div>
           `;
         }
-        // Grillas HTML para cada opción usando la plantilla editable
-        const grids = {
-          1: `
-            <div class="video-grid-1">
-              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
-            </div>
-          `,
-          4: `
-            <div class="video-grid-4">
-              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
-            </div>
-          `,
-          6: `
-            <div class="video-grid-6">
-              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
-            </div>
-          `,
-          9: `
-            <div class="video-grid-9">
-              ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/2Vv-BfVoq4g')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/9bZkp7q19f0')}
-              ${getEditableVideoHTML('https://www.youtube.com/embed/60ItHLz5WEA')}
-            </div>
-          `
-        };
+
+        // --- ADAPTACIÓN PARA CARGA DE CONFIGURACIÓN GUARDADA ---
+        let grids;
+        let initialGridType = '9'; // Por defecto
+
+        if (window.GRID_CONFIG) {
+            try {
+                const config = typeof window.GRID_CONFIG === "string" ? JSON.parse(window.GRID_CONFIG) : window.GRID_CONFIG;
+                grids = {};
+                // Reconstruir el objeto grids usando las URLs guardadas
+                for (const [gridType, videos] of Object.entries(config.grids)) {
+                    let gridClass = '';
+                    if (gridType === '1') gridClass = 'video-grid-1';
+                    if (gridType === '4') gridClass = 'video-grid-4';
+                    if (gridType === '6') gridClass = 'video-grid-6';
+                    if (gridType === '9') gridClass = 'video-grid-9';
+                    grids[gridType] = `<div class="${gridClass}">` +
+                        videos.map(v => getEditableVideoHTML(v.video_url)).join('') +
+                        `</div>`;
+                }
+                // --- Asegurar que todas las grillas existan ---
+                const defaultGrids = {
+                  1: `<div class="video-grid-1">
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                      </div>`,
+                  4: `<div class="video-grid-4">
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+                      </div>`,
+                  6: `<div class="video-grid-6">
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
+                      </div>`,
+                  9: `<div class="video-grid-9">
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/2Vv-BfVoq4g')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/9bZkp7q19f0')}
+                        ${getEditableVideoHTML('https://www.youtube.com/embed/60ItHLz5WEA')}
+                      </div>`
+                };
+                ['1', '4', '6', '9'].forEach(function(key) {
+                  if (!grids[key]) {
+                    grids[key] = defaultGrids[key];
+                  }
+                });
+                // Grilla seleccionada
+                if (config.selected_grid) {
+                    initialGridType = String(config.selected_grid);
+                }
+            } catch (e) {
+                console.error("Error al cargar la configuración guardada:", e);
+                // Si hay error, usa las grillas por defecto
+                grids = undefined;
+            }
+        }
+        // Si no hay configuración, usa las grillas por defecto
+        if (!grids) {
+            grids = {
+                1: `
+                  <div class="video-grid-1">
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                  </div>
+                `,
+                4: `
+                  <div class="video-grid-4">
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+                  </div>
+                `,
+                6: `
+                  <div class="video-grid-6">
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
+                  </div>
+                `,
+                9: `
+                  <div class="video-grid-9">
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/dQw4w9WgXcQ')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/3JZ_D3ELwOQ')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/l482T0yNkeo')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/tgbNymZ7vqY')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/ysz5S6PUM-U')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/ScMzIvxBSi4')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/2Vv-BfVoq4g')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/9bZkp7q19f0')}
+                    ${getEditableVideoHTML('https://www.youtube.com/embed/60ItHLz5WEA')}
+                  </div>
+                `
+            };
+        }
+
+        // --- MOSTRAR LA GRILLA GUARDADA O DEFAULT AL INICIAR ---
+        gridContainer.innerHTML = grids[initialGridType];
+        setTimeout(initEditableVideos, 100);
+
         // Función para inicializar la lógica de edición en los videos
         function initEditableVideos() {
           // Asegurar autoplay y mute en todos los iframes
@@ -481,6 +559,17 @@
                   iframe.setAttribute('src', buildYouTubeSrc(id));
                   input.style.display = 'none';
                   input.value = '';
+
+                  // --- ACTUALIZAR EL OBJETO 'grids' ---
+                  let gridContainer = document.getElementById('video-grid-container');
+                  let gridType = null;
+                  if (gridContainer.firstElementChild.classList.contains('video-grid-1')) gridType = '1';
+                  if (gridContainer.firstElementChild.classList.contains('video-grid-4')) gridType = '4';
+                  if (gridContainer.firstElementChild.classList.contains('video-grid-6')) gridType = '6';
+                  if (gridContainer.firstElementChild.classList.contains('video-grid-9')) gridType = '9';
+                  if (gridType) {
+                    grids[gridType] = gridContainer.innerHTML;
+                  }
                 } else {
                   input.value = '';
                   input.placeholder = 'URL inválida, intenta de nuevo';
@@ -545,37 +634,39 @@
 
         // Guardar configuración al hacer click en Save
         document.getElementById('save-grid-config').addEventListener('click', async function() {
-          // Obtener user_id (puedes obtenerlo de una variable global, cookie, o backend; aquí ejemplo simple)
           let user_id = window.USER_ID || null;
           if (!user_id) {
             alert('No se pudo obtener el usuario actual.');
             return;
           }
-          // Recolectar todas las URLs de videos de todas las grillas
-          // Suponiendo que tienes una variable global o puedes reconstruir las URLs de cada grilla
-          // Aquí ejemplo: solo recolecta la grilla actual (debes adaptar para recolectar todas)
+
+          // Recolectar los videos de TODAS las grillas
+          let gridsData = {};
           let selectedGrid = null;
-          let grids = {};
-          document.querySelectorAll('.video-grid-1, .video-grid-4, .video-grid-6, .video-grid-9').forEach(function(grid) {
-            let gridType = null;
-            if (grid.classList.contains('video-grid-1')) gridType = '1';
-            if (grid.classList.contains('video-grid-4')) gridType = '4';
-            if (grid.classList.contains('video-grid-6')) gridType = '6';
-            if (grid.classList.contains('video-grid-9')) gridType = '9';
-            if (!gridType) return;
-            if (grid.style.display !== 'none') selectedGrid = parseInt(gridType);
+
+          // Para cada tipo de grilla
+          ['1', '4', '6', '9'].forEach(function(gridType) {
+            // Creamos un contenedor temporal para parsear el HTML de la grilla
+            let tempDiv = document.createElement('div');
+            tempDiv.innerHTML = grids[gridType];
             let videos = [];
-            grid.querySelectorAll('iframe').forEach(function(iframe) {
+            tempDiv.querySelectorAll('iframe').forEach(function(iframe) {
               videos.push({ video_url: iframe.src });
             });
-            grids[gridType] = videos;
+            gridsData[gridType] = videos;
+
+            // Detectar cuál es la grilla actualmente visible
+            let gridContainer = document.getElementById('video-grid-container');
+            if (gridContainer.firstElementChild && gridContainer.firstElementChild.classList.contains('video-grid-' + gridType)) {
+              selectedGrid = parseInt(gridType);
+            }
           });
-          // Construir el JSON
+
           let config = {
             selected_grid: selectedGrid,
-            grids: grids
+            grids: gridsData
           };
-          // Enviar al backend
+
           let res = await fetch('/users/save_grid_config', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -593,7 +684,6 @@
           window.location.href = '/users/logout';
         });
       });
-      window.USER_ID = {{ user_id | tojson }};
     </script>
 </body>
 </html>
