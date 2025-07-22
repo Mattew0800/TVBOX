@@ -8,8 +8,10 @@ from app.utils.password import verify_password
 class user_repository:
     @staticmethod
     def login(db: Session, email: str, password: str) -> User | None:
-        user = db.query(User).filter(User.email == email).filter(User.password == password).first() #type: ignore
-        return user
+        user = db.query(User).filter(User.email == email).first() #type: ignore
+        if user and verify_password(password, user.password):
+            return user
+        return None
 
     @staticmethod
     def require_login(request: Request):

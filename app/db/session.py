@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from app.db.models.user import User, UserGridConfig
 
 # Asegurate de tener instalado el driver pymysql
 # pip install pymysql
@@ -27,6 +28,9 @@ SessionLocal = sessionmaker(
 def get_db():
     db = SessionLocal()
     try:
+        # Crear tablas si no existen
+        User.metadata.create_all(engine)
+        UserGridConfig.metadata.create_all(engine)
         yield db
     finally:
         db.close()
